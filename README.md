@@ -169,14 +169,6 @@ telecom-commission-analytics/
 
 4. **Update the data source path.** Power BI stores the full file path of each CSV, so after cloning go to **Home → Transform data → Data source settings → Change Source** and point each of the four CSVs to your local folder, then click **Refresh**.
 
-## 🔮 Future Improvements
-
-- Add target vs. actual revenue tracking per agent and county
-- Define "active" as agents with at least one sale in the selected period
-- Add agent-level KPIs such as average sale value and sales per agent
-- Add commission analysis by product and tier
-- Publish the report to Power BI Service with scheduled refresh
-
 ## 👩‍💻 Author
 
 **Hilda Kiptoo**
