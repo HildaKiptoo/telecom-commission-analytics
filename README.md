@@ -18,7 +18,6 @@ An end-to-end analytics project that tracks **agent sales performance, revenue a
 - [Tech Stack](#-tech-stack)
 - [Repository Structure](#-repository-structure)
 - [Getting Started](#-getting-started)
-- [Future Improvements](#-future-improvements)
 - [Author](#-author)
 
 ---
