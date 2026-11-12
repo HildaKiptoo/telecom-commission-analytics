@@ -26,7 +26,7 @@ agents_data = []
 for i in range(1, num_agents + 1):
     agents_data.append({
         'Agent_ID': f'AGT{i:04d}',
-        'Agent_Name': fake.name(),
+        'Agent_Name': fake.unique.name(),
         'County': np.random.choice(kenyan_counties, p=[0.3, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05, 0.1]),
         'Agent_Status': np.random.choice(['Active', 'Inactive'], p=[0.85, 0.15])
     })
