@@ -1,0 +1,6 @@
+Product_ID,Product_Name,Category,Base_Price_KES,Commission_Rate
+P001,10GB Monthly Data,Data,1000,0.05
+P002,50GB Monthly Data,Data,3000,0.05
+P003,Home Fiber 20Mbps,Fiber,4000,0.1
+P004,Home Fiber 50Mbps,Fiber,6500,0.12
+P005,Unlimited Voice Plan,Voice,1500,0.07
