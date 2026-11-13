@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from faker import Faker
 from datetime import datetime
+import os
 
 # Initialize Faker
 fake = Faker()
@@ -50,7 +51,6 @@ dim_date = pd.DataFrame({
 num_transactions = 500000  # Supersized transaction volume
 
 # Create a weighted probability for dates to simulate business growth over time
-# This ensures your Power BI line charts show a realistic upward trend
 date_probabilities = np.linspace(1, 3, len(date_range))
 date_probabilities /= date_probabilities.sum()
 
@@ -82,10 +82,31 @@ fact_sales['Commission_KES'] = (fact_sales['Amount_KES'] * fact_sales['Commissio
 fact_sales = fact_sales[['Transaction_ID', 'Date', 'Agent_ID', 'Product_ID', 'Amount_KES', 'Commission_KES']]
 fact_sales = fact_sales.sort_values(by='Date').reset_index(drop=True)
 
-# --- 5. Export to CSV ---
-dim_product.to_csv('Dim_Product.csv', index=False)
-dim_agent.to_csv('Dim_Agent.csv', index=False)
-dim_date.to_csv('Dim_Date.csv', index=False)
-fact_sales.to_csv('Fact_Sales.csv', index=False)
+# --- 5. Export to CSV (Power BI Star Schema) ---
+# Create 'data' directory if it doesn't exist
+os.makedirs('data', exist_ok=True)
+
+dim_product.to_csv('data/Dim_Product.csv', index=False)
+dim_agent.to_csv('data/Dim_Agent.csv', index=False)
+dim_date.to_csv('data/Dim_Date.csv', index=False)
+fact_sales.to_csv('data/Fact_Sales.csv', index=False)
+
+# --- 6. Export Flattened CSV (Streamlit App) ---
+# Merge dimensional data into the fact table for the Streamlit dashboard
+streamlit_df = fact_sales.merge(dim_agent[['Agent_ID', 'Agent_Name', 'County']], on='Agent_ID', how='left')
+streamlit_df = streamlit_df.merge(dim_product[['Product_ID', 'Category']], on='Product_ID', how='left')
+
+# Rename columns to match Streamlit app definitions
+streamlit_df = streamlit_df.rename(columns={
+    'Amount_KES': 'Gross_Revenue',
+    'Commission_KES': 'Commission'
+})
+
+# Filter only the necessary columns to optimize the Streamlit cloud deployment size
+streamlit_df = streamlit_df[['Date', 'Agent_Name', 'County', 'Category', 'Gross_Revenue', 'Commission']]
+
+# Save the unified dataset
+streamlit_df.to_csv('data/telecom_data.csv', index=False)
 
 print(f"Success! Generated {num_transactions:,} transactions across {num_agents} agents.")
+print("All files have been successfully saved to the 'data/' folder.")
